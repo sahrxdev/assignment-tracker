@@ -1,4 +1,4 @@
-import { clearAllData, getSettings, saveSettings } from '../lib/storage.js';
+import { getSettings, saveSettings } from '../lib/storage.js';
 
 document.addEventListener('DOMContentLoaded', async () => {
   const settings = await getSettings();
@@ -72,7 +72,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       return;
     }
     try {
-      await clearAllData();
+      const response = await chrome.runtime.sendMessage({ type: 'CLEAR_SESSION_DATA' });
+      if (!response?.ok) throw new Error(response?.error || 'Session data could not be deleted.');
       location.reload();
     } catch (error) {
       showStatus(`Could not delete local data: ${error.message}`, 'error');

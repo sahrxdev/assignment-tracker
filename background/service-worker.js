@@ -1,5 +1,6 @@
 import {
   addEvent,
+  clearAllData,
   deleteAssignmentData,
   getAssignments,
   getSettings,
@@ -91,7 +92,7 @@ chrome.storage.onChanged.addListener((changes, areaName) => {
 });
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  if (!['ACTIVITY', 'EVENT', 'GET_SESSION_ID', 'GET_STATS', 'GET_ASSIGNMENT_ID', 'TOGGLE_PAUSE', 'DELETE_ASSIGNMENT'].includes(request.type)) {
+  if (!['ACTIVITY', 'EVENT', 'GET_SESSION_ID', 'GET_STATS', 'GET_ASSIGNMENT_ID', 'TOGGLE_PAUSE', 'DELETE_ASSIGNMENT', 'CLEAR_SESSION_DATA'].includes(request.type)) {
     return false;
   }
 
@@ -168,6 +169,15 @@ async function handleMessage(request, sender) {
       }
     }
     await deleteAssignmentData(assignmentId);
+    return { ok: true };
+  }
+
+  if (request.type === 'CLEAR_SESSION_DATA') {
+    for (const tabId of Object.keys(currentSessions)) {
+      await endSession(Number(tabId));
+    }
+    await clearAllData();
+    await refreshOpenTabs();
     return { ok: true };
   }
 
