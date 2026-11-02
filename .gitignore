@@ -1,0 +1,28 @@
+# Dependencies
+node_modules/
+
+# Generated extension package
+assignment-tracker.zip
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.p12
+*.pfx
+secrets/
+
+# Logs and temporary files
+*.log
+npm-debug.log*
+yarn-debug.log*
+*.tmp
+
+# Operating system and editor files
+.DS_Store
+Thumbs.db
+Desktop.ini
+.vscode/
+.idea/

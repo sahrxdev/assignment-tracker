@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../lib/theme.css">
+  <link rel="stylesheet" href="report.css">
+  <title>Assignment report</title>
+</head>
+<body>
+  <main class="report-page">
+    <header class="report-header">
+      <div class="report-title">
+        <p class="eyebrow">Session overview</p>
+        <h1 id="assign-label">Assignment report</h1>
+        <p id="date-range" class="muted">Loading activity…</p>
+      </div>
+      <div class="live-indicator"><span aria-hidden="true"></span> Live updates</div>
+    </header>
+
+    <section class="summary-cards" aria-label="Session summary">
+      <article class="card"><span>Total time</span><strong id="sum-total">0m</strong><small>Time in this session</small></article>
+      <article class="card"><span>Active time</span><strong id="sum-active">0m</strong><small>While the page was focused</small></article>
+      <article class="card"><span>Paste ratio</span><strong id="sum-ratio">0%</strong><small>Of recorded text input</small></article>
+      <article class="card risk-card" id="risk-card"><span>Attention level</span><strong id="sum-flag">Normal</strong><small id="risk-detail">Based on current activity</small></article>
+    </section>
+
+    <section class="report-section timeline-section surface">
+      <div class="section-title">
+        <div><p class="eyebrow">Activity</p><h2>Session timeline</h2></div>
+        <div class="legend"><span class="legend-paste"></span> Paste <span class="legend-switch"></span> Tab switch</div>
+      </div>
+      <canvas id="timeline-canvas" width="1000" height="120" role="img" aria-label="Timeline of paste events and tab switches"></canvas>
+      <p class="timeline-caption">Events are shown in the order they were recorded on this device.</p>
+    </section>
+
+    <section class="report-section surface table-section">
+      <div class="section-title">
+        <div><p class="eyebrow">Recorded events</p><h2>Paste activity</h2></div>
+        <span id="event-count" class="event-count">0 events</span>
+      </div>
+      <div class="table-wrap">
+        <table id="paste-table">
+          <thead>
+            <tr><th scope="col">Time</th><th scope="col">Characters</th><th scope="col">Source</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </section>
+
+    <footer class="report-footer">
+      <p id="report-status" class="status-message" role="status" aria-live="polite"></p>
+      <div class="report-actions">
+        <button id="btn-export-csv" class="secondary" type="button">Export CSV</button>
+        <button id="btn-export-json" class="secondary" type="button">Export JSON</button>
+        <button id="btn-print" class="secondary" type="button">Print report</button>
+        <button id="btn-delete" class="danger" type="button">Delete data</button>
+      </div>
+    </footer>
+  </main>
+  <script type="module" src="report.js"></script>
+</body>
+</html>

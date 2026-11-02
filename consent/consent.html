@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../lib/theme.css">
+  <link rel="stylesheet" href="consent.css">
+  <title>AssignmentTracker consent</title>
+</head>
+<body>
+  <main class="consent-page">
+    <section class="consent-card surface">
+      <img src="../icons/icon128.png" alt="" width="68" height="68">
+      <p class="eyebrow">Your data. Your choice.</p>
+      <h1>Before you get started</h1>
+      <p class="intro">AssignmentTracker can help you understand activity during online assignments. Please review what it records before enabling tracking.</p>
+
+      <div class="collection-card">
+        <h2>When enabled, it records</h2>
+        <ul>
+          <li>Active and idle time on websites you allow</li>
+          <li>Counts of typed and pasted characters</li>
+          <li>Paste event sizes and tab switches</li>
+          <li>Optional short paste previews, which you can turn off in Settings</li>
+        </ul>
+      </div>
+
+      <p class="privacy-copy"><strong>It does not record passwords or send your activity to a server.</strong> Data is stored locally in this Chrome profile and can be deleted from Settings.</p>
+      <p id="consent-status" class="status-message" role="status" aria-live="polite"></p>
+      <div class="consent-actions">
+        <button id="btn-agree" type="button">I understand and agree</button>
+        <button id="btn-decline" class="secondary" type="button">Decline</button>
+      </div>
+    </section>
+  </main>
+  <script type="module" src="consent.js"></script>
+</body>
+</html>

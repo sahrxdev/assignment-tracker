@@ -1,0 +1,10 @@
+{
+  "name": "assignment-tracker",
+  "private": true,
+  "scripts": {
+    "package": "node create-zip.js"
+  },
+  "dependencies": {
+    "jszip": "^3.10.2"
+  }
+}

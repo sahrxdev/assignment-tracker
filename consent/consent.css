@@ -1,0 +1,83 @@
+.consent-page {
+  display: grid;
+  min-height: 100vh;
+  place-items: center;
+  padding: 28px 16px;
+}
+
+.consent-card {
+  width: min(100%, 590px);
+  padding: clamp(24px, 5vw, 42px);
+}
+
+.consent-card > img {
+  display: block;
+  margin-bottom: 20px;
+  border-radius: 17px;
+}
+
+.consent-card h1 {
+  margin: 4px 0 8px;
+  font-size: clamp(28px, 5vw, 36px);
+  letter-spacing: -0.05em;
+  line-height: 1.15;
+}
+
+.intro {
+  margin: 0;
+  color: var(--muted);
+}
+
+.collection-card {
+  margin: 23px 0 17px;
+  padding: 17px 19px;
+  border: 1px solid var(--line);
+  border-radius: 13px;
+  background: #f9fbfa;
+}
+
+.collection-card h2 {
+  margin: 0 0 9px;
+  font-size: 14px;
+}
+
+.collection-card ul {
+  display: grid;
+  gap: 7px;
+  margin: 0;
+  padding-left: 19px;
+  color: #53645b;
+  font-size: 13px;
+}
+
+.collection-card li::marker {
+  color: var(--green);
+}
+
+.privacy-copy {
+  padding: 13px 15px;
+  border-radius: 11px;
+  color: #456658;
+  background: #edf7f0;
+  font-size: 12px;
+}
+
+.consent-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.consent-actions button:first-child {
+  flex: 1;
+}
+
+.consent-actions button:last-child {
+  min-width: 105px;
+}
+
+@media (max-width: 420px) {
+  .consent-actions {
+    flex-direction: column;
+  }
+}

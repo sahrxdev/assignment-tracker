@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../lib/theme.css">
+  <link rel="stylesheet" href="options.css">
+  <title>AssignmentTracker settings</title>
+</head>
+<body>
+  <main class="settings-page">
+    <header class="page-header">
+      <div>
+        <p class="eyebrow">Personalize your experience</p>
+        <h1>Settings</h1>
+        <p class="muted">Choose where tracking is enabled and how session activity is measured.</p>
+      </div>
+      <img src="../icons/icon48.png" alt="" width="50" height="50">
+    </header>
+
+    <div class="settings-layout">
+      <div class="settings-main">
+        <section class="settings-card surface" id="role-section">
+          <div class="section-heading">
+            <span class="section-icon" aria-hidden="true">01</span>
+            <div>
+              <h2>Profile</h2>
+              <p>Choose the profile for this installation.</p>
+            </div>
+          </div>
+          <label class="field-label" for="sel-role">Using AssignmentTracker as</label>
+          <select id="sel-role">
+            <option value="student">Student</option>
+            <option value="teacher">Teacher</option>
+          </select>
+        </section>
+
+        <section class="settings-card surface" id="sites-section">
+          <div class="section-heading">
+            <span class="section-icon" aria-hidden="true">02</span>
+            <div>
+              <h2>Allowed websites</h2>
+              <p>Activity is tracked only on sites in this list.</p>
+            </div>
+          </div>
+          <ul id="list-sites" class="site-list" aria-label="Allowed websites"></ul>
+          <div class="add-site">
+            <label class="field-label" for="inp-new-site">Add a website pattern</label>
+            <div class="input-action">
+              <input type="text" id="inp-new-site" placeholder="https://example.com/*" autocomplete="off">
+              <button id="btn-add-site" type="button" class="secondary">Add site</button>
+            </div>
+            <p class="field-help">Use a full HTTPS URL. Add * to include paths, such as https://docs.google.com/*.</p>
+          </div>
+        </section>
+
+        <section class="settings-card surface" id="thresholds-section">
+          <div class="section-heading">
+            <span class="section-icon" aria-hidden="true">03</span>
+            <div>
+              <h2>Session thresholds</h2>
+              <p>Adjust how long inactivity and paste activity are interpreted.</p>
+            </div>
+          </div>
+          <div class="threshold-grid">
+            <label class="input-field" for="inp-idle">
+              <span>Idle timeout</span>
+              <span class="input-suffix"><input type="number" id="inp-idle" min="5" max="3600" step="1"><span>seconds</span></span>
+            </label>
+            <label class="input-field" for="inp-norm">
+              <span>Normal paste ratio</span>
+              <span class="input-suffix"><input type="number" id="inp-norm" min="0" max="100" step="1"><span>%</span></span>
+            </label>
+            <label class="input-field" for="inp-rev">
+              <span>Review paste ratio</span>
+              <span class="input-suffix"><input type="number" id="inp-rev" min="0" max="100" step="1"><span>%</span></span>
+            </label>
+            <label class="input-field" for="inp-large">
+              <span>Large paste threshold</span>
+              <span class="input-suffix"><input type="number" id="inp-large" min="1" max="1000000" step="1"><span>characters</span></span>
+            </label>
+          </div>
+        </section>
+      </div>
+
+      <aside class="settings-side">
+        <section class="settings-card surface" id="privacy-section">
+          <div class="section-heading">
+            <span class="section-icon privacy-icon" aria-hidden="true">04</span>
+            <div>
+              <h2>Privacy & data</h2>
+              <p>Your activity stays on this device.</p>
+            </div>
+          </div>
+          <label class="toggle-row" for="chk-preview">
+            <span><strong>Paste previews</strong><small>Save up to 50 characters from each paste event.</small></span>
+            <input type="checkbox" id="chk-preview">
+          </label>
+          <label class="toggle-row" for="chk-banner">
+            <span><strong>On-page indicator</strong><small>Show a small banner while a session is tracked.</small></span>
+            <input type="checkbox" id="chk-banner">
+          </label>
+          <div class="storage-meter">
+            <span>Local storage used</span>
+            <strong id="val-storage">Checking…</strong>
+          </div>
+          <button id="btn-clear-data" class="danger full-width" type="button">Delete session data</button>
+        </section>
+
+        <section class="privacy-note">
+          <span aria-hidden="true">🔒</span>
+          <p>AssignmentTracker does not send your session data to a server. You can delete locally stored data at any time.</p>
+        </section>
+      </aside>
+    </div>
+
+    <footer class="save-bar">
+      <p id="save-status" class="status-message" role="status" aria-live="polite"></p>
+      <button id="btn-save" type="button">Save changes</button>
+    </footer>
+  </main>
+  <script type="module" src="options.js"></script>
+</body>
+</html>

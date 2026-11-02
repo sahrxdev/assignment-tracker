@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="../lib/theme.css">
+  <link rel="stylesheet" href="popup.css">
+  <title>AssignmentTracker</title>
+</head>
+<body>
+  <main class="container">
+    <header class="topbar">
+      <img src="../icons/icon48.png" alt="" width="38" height="38">
+      <div>
+        <p class="eyebrow">Your study session</p>
+        <h1>AssignmentTracker</h1>
+      </div>
+    </header>
+
+    <div id="status-line" class="status-pill" role="status" aria-live="polite">
+      <span class="status-dot" aria-hidden="true"></span>
+      <span id="status-label">Checking this page…</span>
+    </div>
+
+    <section id="stats-section" aria-label="Live session statistics">
+      <div class="hero-stat">
+        <span class="stat-label">Active time</span>
+        <strong id="val-active">0m</strong>
+        <span class="stat-caption">Time spent actively working</span>
+      </div>
+      <div class="stats-grid">
+        <article class="stat-card"><span>Total time</span><strong id="val-total">0m</strong></article>
+        <article class="stat-card"><span>Paste events</span><strong id="val-pastes">0</strong></article>
+        <article class="stat-card"><span>Paste ratio</span><strong id="val-ratio">0%</strong></article>
+        <article class="stat-card"><span>Tab switches</span><strong id="val-switches">0</strong></article>
+      </div>
+    </section>
+
+    <p id="empty-state" class="empty-state" hidden>Open an allowed assignment page to see its live activity here.</p>
+    <div class="buttons">
+      <button id="btn-pause" class="secondary" disabled>Pause tracking</button>
+      <button id="btn-report" disabled>View report</button>
+    </div>
+    <button id="btn-settings" class="settings-link">Settings <span aria-hidden="true">↗</span></button>
+  </main>
+  <script src="popup.js"></script>
+</body>
+</html>
