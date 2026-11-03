@@ -20,6 +20,37 @@ The ZIP packaging helper uses Node.js and JSZip:
 
 The popup refreshes live session data while open, and an open report refreshes when local session data changes. Settings are applied to currently open allowed tabs when saved.
 
+## Student and lecturer portal
+The optional portal adds Supabase Auth, private class join codes, assignments, autosaved student drafts, final submissions, private attachments, and live updates. Assignment and submission access is enforced by Supabase row-level security; a UI role check is not an authorization boundary.
+
+### Configure Supabase
+1. Create a Supabase project and open its **SQL Editor**.
+2. Run the entire `supabase/schema.sql` file to create the tables, private file bucket, role policies, and realtime publication entries.
+3. In **Project Settings → API**, copy the Project URL and the publishable key (or legacy anon key). Never use a `service_role` or secret key in this browser app.
+4. Copy `.env.example` to `.env.local` and replace the placeholder values:
+   ```powershell
+   Copy-Item .env.example .env.local
+   ```
+5. In Supabase **Authentication → URL Configuration**, set the local site URL to `http://localhost:5173`. Configure the email provider and confirmation policy you want before inviting real users.
+6. Create an account in the portal. New self-service registrations are always students.
+7. To authorize a lecturer, create their account in the portal, then run this administrative statement in the Supabase SQL Editor:
+   ```sql
+   update public.profiles
+   set role = 'teacher'
+   where email = 'lecturer@example.edu';
+   ```
+   Run it only as a trusted project administrator, after confirming the email address. Users cannot change their own role through the app or API.
+
+### Run the portal locally
+1. Run `npm install` from the project root.
+2. Run `npm run dev:portal`.
+3. Open the local URL printed by Vite (normally `http://localhost:5173`).
+4. Lecturers create a class, share its join code with students, then publish an assignment to that class. Students join with the code, write their response, optionally attach files up to 10 MB each, and submit. Submitted work is locked in this first version.
+
+To deploy the portal, configure `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` as build-time environment variables in your static host, run `npm run build:portal`, and publish `dist/portal` as the site root over HTTPS. In Supabase **Authentication → URL Configuration**, set the production site URL and add your local development URL to the redirect URL allow list. The browser key is public by design; row-level security and storage policies protect the data. Keep passwords, service-role keys, and other secrets out of the frontend and Git.
+
+This is a starter workflow, not a complete learning-management system: it does not yet include grading, class rosters, institutional single sign-on, extension-to-account linking, or policy/compliance review. Student activity tracking remains a separate extension feature and is not included in assignment submissions.
+
 ## Usage
 1. **Consent**: On first install, a consent screen appears. Agree to enable tracking.
 2. **Tracking**: Visit allowed sites (Google Docs/Forms by default). The badge turns green.

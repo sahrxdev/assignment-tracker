@@ -1,0 +1,165 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#f4f7f5">
+    <title>AssignmentTracker portal</title>
+    <link rel="stylesheet" href="./style.css">
+  </head>
+  <body>
+    <main class="shell">
+      <header class="topbar">
+        <a class="brand" href="#" aria-label="AssignmentTracker home">
+          <img src="../icons/icon48.png" width="38" height="38" alt="">
+          <span>Assignment<span class="brand-accent">Tracker</span></span>
+        </a>
+        <div id="account-bar" class="account-bar" hidden>
+          <span id="account-label" class="account-label"></span>
+          <button id="sign-out" class="button button-quiet" type="button">Sign out</button>
+        </div>
+      </header>
+
+      <section id="setup-message" class="setup-message" hidden>
+        <span class="setup-icon" aria-hidden="true">!</span>
+        <div>
+          <strong>Connect your Supabase project</strong>
+          <p>Copy <code>.env.example</code> to <code>.env.local</code>, add your Supabase project URL and publishable/anon key, then restart the portal.</p>
+        </div>
+      </section>
+
+      <section id="auth-view" class="auth-layout">
+        <div class="auth-story">
+          <p class="eyebrow">A calmer way to manage coursework</p>
+          <h1>One place for assignments, drafts, and submissions.</h1>
+          <p class="story-copy">Lecturers can share clear assignment briefs. Students can work on a draft, attach files, and submit when it is ready.</p>
+          <div class="trust-note"><span aria-hidden="true">🔒</span><span>Your account and coursework are private to your class roles.</span></div>
+        </div>
+        <form id="auth-form" class="auth-card" autocomplete="on">
+          <p class="eyebrow">Welcome</p>
+          <h2 id="auth-title">Sign in</h2>
+          <p id="auth-description" class="muted">Use your school or personal email to continue.</p>
+          <label id="name-field" class="form-field" hidden>
+            <span>Your name</span>
+            <input id="display-name" name="name" type="text" autocomplete="name" maxlength="80" placeholder="How should we address you?">
+          </label>
+          <label class="form-field">
+            <span>Email address</span>
+            <input id="email" name="email" type="email" autocomplete="email" required placeholder="you@example.com">
+          </label>
+          <label class="form-field">
+            <span>Password</span>
+            <input id="password" name="password" type="password" autocomplete="current-password" minlength="8" required placeholder="At least 8 characters">
+          </label>
+          <p id="auth-status" class="notice" role="status" aria-live="polite"></p>
+          <button id="auth-submit" class="button button-primary button-wide" type="submit">Sign in</button>
+          <button id="auth-toggle" class="text-button" type="button">New here? Create a student account</button>
+          <p class="teacher-note">Lecturers: accounts are enabled by your administrator. Contact them to receive teacher access.</p>
+        </form>
+      </section>
+
+      <section id="dashboard-view" hidden>
+        <div class="welcome-row">
+          <div>
+            <p id="role-label" class="eyebrow">Student workspace</p>
+            <h1 id="welcome-title">Your assignments</h1>
+            <p id="welcome-copy" class="muted">Pick an assignment to start or continue a draft.</p>
+          </div>
+          <span id="role-chip" class="role-chip">Student</span>
+        </div>
+
+        <section id="student-panel" class="workspace" hidden>
+          <aside class="assignment-column">
+            <div class="panel-heading">
+              <div><p class="eyebrow">Coursework</p><h2>Assignments</h2></div>
+              <button id="refresh-student" class="icon-button" type="button" aria-label="Refresh assignments" title="Refresh">↻</button>
+            </div>
+            <form id="join-course-form" class="join-course-form">
+              <label class="form-field">
+                <span>Join a class</span>
+                <span class="join-code-row"><input id="join-code" maxlength="10" required placeholder="10-character class code"><button class="button button-secondary" type="submit">Join</button></span>
+              </label>
+              <p id="join-status" class="notice" role="status" aria-live="polite"></p>
+            </form>
+            <div id="student-assignment-list" class="assignment-list"></div>
+          </aside>
+          <section class="work-column">
+            <div id="student-empty" class="empty-card">
+              <span class="empty-art" aria-hidden="true">✦</span>
+              <h2>Your next step starts here</h2>
+              <p>Choose an assignment to read the brief and work on your response.</p>
+            </div>
+            <article id="student-detail" class="detail-card" hidden>
+              <div class="detail-heading">
+                <div>
+                  <p class="eyebrow">Assignment brief</p>
+                  <h2 id="student-assignment-title"></h2>
+                  <p id="student-due" class="due-label"></p>
+                </div>
+                <span id="student-submission-state" class="state-chip"></span>
+              </div>
+              <div id="student-instructions" class="instructions"></div>
+              <div class="response-heading">
+                <label for="student-response">Your response</label>
+                <span id="draft-status" class="draft-status" role="status" aria-live="polite"></span>
+              </div>
+              <textarea id="student-response" rows="12" maxlength="100000" placeholder="Start writing your response here…"></textarea>
+              <div class="editor-footer"><span id="word-count">0 words · 0 characters</span><span>Drafts save automatically</span></div>
+              <div class="attachment-box">
+                <div><strong>Attachments</strong><p>Up to 10 MB per file. Keep your original copies.</p></div>
+                <label id="attachment-picker" class="button button-secondary file-picker">Add files<input id="student-files" type="file" multiple></label>
+              </div>
+              <ul id="student-file-list" class="file-list"></ul>
+              <div class="submit-row">
+                <span>Submitting locks your response and attachments.</span>
+                <button id="submit-assignment" class="button button-primary" type="button">Submit assignment</button>
+              </div>
+            </article>
+          </section>
+        </section>
+
+        <section id="teacher-panel" class="teacher-workspace" hidden>
+          <section class="teacher-classes card">
+            <div class="panel-heading">
+              <div><p class="eyebrow">Classroom</p><h2>Your classes</h2></div>
+              <button id="refresh-courses" class="icon-button" type="button" aria-label="Refresh classes" title="Refresh">↻</button>
+            </div>
+            <form id="course-form" class="course-form">
+              <label class="form-field"><span>New class name</span><input id="course-name" maxlength="120" required placeholder="e.g. Biology 101"></label>
+              <button class="button button-secondary" type="submit">Create class</button>
+              <p id="course-status" class="notice" role="status" aria-live="polite"></p>
+            </form>
+            <div id="teacher-course-list" class="teacher-course-list"></div>
+          </section>
+          <section class="teacher-create card">
+            <div class="panel-heading">
+              <div><p class="eyebrow">Lecturer tools</p><h2>Create an assignment</h2></div>
+            </div>
+            <form id="assignment-form" class="assignment-form">
+              <label class="form-field"><span>Assignment title</span><input id="assignment-title" maxlength="160" required placeholder="e.g. Research reflection"></label>
+              <label class="form-field"><span>Instructions</span><textarea id="assignment-instructions" rows="5" maxlength="20000" placeholder="Describe the task, expectations, and submission requirements."></textarea></label>
+              <label class="form-field"><span>Class</span><select id="assignment-course" required><option value="">Create a class first</option></select></label>
+              <label class="form-field"><span>Due date <small>(optional)</small></span><input id="assignment-due" type="datetime-local"></label>
+              <button class="button button-primary" type="submit">Publish assignment</button>
+              <p id="teacher-status" class="notice" role="status" aria-live="polite"></p>
+            </form>
+          </section>
+          <section class="teacher-list card">
+            <div class="panel-heading">
+              <div><p class="eyebrow">Your class</p><h2>Assignments & submissions</h2></div>
+              <button id="refresh-teacher" class="icon-button" type="button" aria-label="Refresh assignments" title="Refresh">↻</button>
+            </div>
+            <div id="teacher-assignment-list" class="teacher-assignment-list"></div>
+            <div id="teacher-submissions" class="submission-list"></div>
+          </section>
+        </section>
+      </section>
+
+      <footer class="page-footer">
+        <span>AssignmentTracker</span>
+        <span>Coursework stays private to your account and its assigned lecturer.</span>
+      </footer>
+    </main>
+    <script type="module" src="./src/main.js"></script>
+  </body>
+</html>

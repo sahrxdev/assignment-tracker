@@ -2,9 +2,15 @@
   "name": "assignment-tracker",
   "private": true,
   "scripts": {
-    "package": "node create-zip.js"
+    "package": "node create-zip.js",
+    "dev:portal": "vite --host 127.0.0.1",
+    "build:portal": "vite build"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.118.0",
     "jszip": "^3.10.2"
+  },
+  "devDependencies": {
+    "vite": "^8.3.5"
   }
 }
