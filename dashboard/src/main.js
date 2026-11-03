@@ -4,8 +4,25 @@ const config = {
   url: import.meta.env.VITE_SUPABASE_URL,
   key: import.meta.env.VITE_SUPABASE_ANON_KEY
 };
-const ready = Boolean(config.url && config.key);
-const supabase = ready ? createClient(config.url, config.key) : null;
+const supabaseUrl = config.url?.trim() || '';
+const supabaseKey = config.key?.trim() || '';
+const validSupabaseUrl = (() => {
+  try {
+    const url = new URL(supabaseUrl);
+    return url.protocol === 'https:' || url.protocol === 'http:';
+  } catch {
+    return false;
+  }
+})();
+const configError = !supabaseUrl
+  ? 'Add your Supabase URL and publishable/anon key to .env.local, then restart the portal.'
+  : !validSupabaseUrl
+    ? 'The Supabase URL must be a valid HTTP or HTTPS URL, such as https://your-project.supabase.co.'
+    : !supabaseKey
+      ? 'Add your Supabase publishable/anon key to .env.local, then restart the portal.'
+      : '';
+const ready = !configError;
+const supabase = ready ? createClient(supabaseUrl, supabaseKey) : null;
 const MAX_FILE_BYTES = 10 * 1024 * 1024;
 const state = {
   user: null,
@@ -18,6 +35,7 @@ const state = {
   selectedAssignment: null,
   submission: null,
   saveTimer: null,
+  authPendingTimer: null,
   realtime: null,
   authSubscription: null,
   busy: false
@@ -31,7 +49,7 @@ const authView = byId('auth-view');
 
 if (!ready) {
   byId('setup-message').hidden = false;
-  authStatus.textContent = 'Add your Supabase URL and publishable/anon key to .env.local, then restart the portal.';
+  authStatus.textContent = configError;
   authStatus.dataset.state = 'error';
   byId('auth-submit').disabled = true;
 } else {
@@ -52,19 +70,26 @@ byId('auth-toggle').addEventListener('click', () => {
   byId('auth-toggle').textContent = isCreating
     ? 'Already have an account? Sign in'
     : 'New here? Create a student account';
-  setNotice(authStatus, '', '');
+  setNotice(authStatus, configError, configError ? 'error' : '');
 });
 
 authForm.addEventListener('submit', async event => {
   event.preventDefault();
   if (!supabase || state.busy) return;
   setBusy(true);
-  setNotice(authStatus, '', '');
+  const isSignup = authForm.dataset.mode === 'signup';
+  setNotice(authStatus, isSignup ? 'Creating your account…' : 'Signing you in…', '');
+  clearTimeout(state.authPendingTimer);
+  state.authPendingTimer = window.setTimeout(() => {
+    if (state.busy) {
+      setNotice(authStatus, 'This is taking longer than expected. Check your connection and Supabase project status; we will show the result when it arrives.', '');
+    }
+  }, 12000);
 
   const email = byId('email').value.trim();
   const password = byId('password').value;
   try {
-    if (authForm.dataset.mode === 'signup') {
+    if (isSignup) {
       const { data, error } = await supabase.auth.signUp({
         email,
         password,
@@ -75,7 +100,7 @@ authForm.addEventListener('submit', async event => {
       if (data.session) {
         await loadWorkspace(data.session.user);
       } else {
-        setNotice(authStatus, 'Account created. Check your email to confirm your address, then sign in.', 'success');
+        setNotice(authStatus, 'Account created. Check your inbox (and spam folder) for the confirmation email, then return here to sign in.', 'success');
         authForm.reset();
       }
     } else {
@@ -86,6 +111,8 @@ authForm.addEventListener('submit', async event => {
   } catch (error) {
     setNotice(authStatus, friendlyError(error), 'error');
   } finally {
+    clearTimeout(state.authPendingTimer);
+    state.authPendingTimer = null;
     setBusy(false);
   }
 });
@@ -849,7 +876,12 @@ function makeListMessage(message) {
 
 function setBusy(busy) {
   state.busy = busy;
-  if (byId('auth-submit')) byId('auth-submit').disabled = busy || !ready;
+  if (byId('auth-submit')) {
+    byId('auth-submit').disabled = busy || !ready;
+    byId('auth-submit').textContent = busy
+      ? authForm.dataset.mode === 'signup' ? 'Creating account…' : 'Signing in…'
+      : authForm.dataset.mode === 'signup' ? 'Create student account' : 'Sign in';
+  }
   if (byId('sign-out')) byId('sign-out').disabled = busy;
 }
 
