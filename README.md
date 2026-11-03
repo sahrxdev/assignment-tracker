@@ -47,7 +47,13 @@ The optional portal adds Supabase Auth, private class join codes, assignments, a
 3. Open the local URL printed by Vite (normally `http://localhost:5173`).
 4. Lecturers create a class, share its join code with students, then publish an assignment to that class. Students join with the code, write their response, optionally attach files up to 10 MB each, and submit. Submitted work is locked in this first version.
 
-To deploy the portal, configure `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` as build-time environment variables in your static host, run `npm run build:portal`, and publish `dist/portal` as the site root over HTTPS. In Supabase **Authentication → URL Configuration**, set the production site URL and add your local development URL to the redirect URL allow list. The browser key is public by design; row-level security and storage policies protect the data. Keep passwords, service-role keys, and other secrets out of the frontend and Git.
+### Deploy to Vercel
+1. Create a Supabase project and run `supabase/schema.sql` before deploying; the portal cannot sign in until it has a configured backend.
+2. In Vercel, import `sahrxdev/assignment-tracker` from GitHub. The included `vercel.json` sets the build command to `npm run build:portal` and the output directory to `dist/portal`.
+3. In the Vercel project’s **Settings → Environment Variables**, add `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` using the Project URL and publishable/anon key from Supabase. Never use a `service_role` or secret key.
+4. Deploy, then copy the Vercel production URL into Supabase **Authentication → URL Configuration** as the Site URL. Add that URL and `http://localhost:5173` to the redirect URL allow list.
+
+The browser key is public by design; row-level security and storage policies protect the data. Keep passwords, service-role keys, and other secrets out of the frontend and Git. The same build command and `dist/portal` output directory can be used with other static hosts.
 
 This is a starter workflow, not a complete learning-management system: it does not yet include grading, class rosters, institutional single sign-on, extension-to-account linking, or policy/compliance review. Student activity tracking remains a separate extension feature and is not included in assignment submissions.
 
