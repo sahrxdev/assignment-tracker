@@ -4,6 +4,7 @@ dist/
 
 # Generated extension package
 assignment-tracker.zip
+unitrack.zip
 
 # Local environment and secrets
 .env

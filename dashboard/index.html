@@ -4,15 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#f4f7f5">
-    <title>AssignmentTracker portal</title>
+    <title>UniTrack | Coursework portal</title>
     <link rel="stylesheet" href="./style.css">
   </head>
   <body>
     <main class="shell">
       <header class="topbar">
-        <a class="brand" href="#" aria-label="AssignmentTracker home">
+        <a class="brand" href="#" aria-label="UniTrack home">
           <img src="../icons/icon48.png" width="38" height="38" alt="">
-          <span>Assignment<span class="brand-accent">Tracker</span></span>
+          <span>Uni<span class="brand-accent">Track</span></span>
         </a>
         <div id="account-bar" class="account-bar" hidden>
           <span id="account-label" class="account-label"></span>
@@ -39,10 +39,6 @@
           <p class="eyebrow">Welcome</p>
           <h2 id="auth-title">Sign in</h2>
           <p id="auth-description" class="muted">Use your school or personal email to continue.</p>
-          <label id="name-field" class="form-field" hidden>
-            <span>Your name</span>
-            <input id="display-name" name="name" type="text" autocomplete="name" maxlength="80" placeholder="How should we address you?">
-          </label>
           <label class="form-field">
             <span>Email address</span>
             <input id="email" name="email" type="email" autocomplete="email" required placeholder="you@example.com">
@@ -53,8 +49,49 @@
           </label>
           <p id="auth-status" class="notice" role="status" aria-live="polite"></p>
           <button id="auth-submit" class="button button-primary button-wide" type="submit">Sign in</button>
-          <button id="auth-toggle" class="text-button" type="button">New here? Create a student account</button>
-          <p class="teacher-note">Lecturers: accounts are enabled by your administrator. Contact them to receive teacher access.</p>
+          <button id="forgot-password" class="text-button" type="button">Forgot password?</button>
+          <p class="teacher-note">Accounts are created by your university administrator. Contact them if you need access.</p>
+        </form>
+        <form id="password-reset-form" class="auth-card" autocomplete="on" hidden>
+          <p class="eyebrow">Account recovery</p>
+          <h2>Reset your password</h2>
+          <p class="muted">Enter your account email. If an account exists, we’ll send a password reset link.</p>
+          <label class="form-field">
+            <span>Email address</span>
+            <input id="reset-email" name="email" type="email" autocomplete="email" required placeholder="you@example.com">
+          </label>
+          <p id="reset-status" class="notice" role="status" aria-live="polite"></p>
+          <button id="reset-submit" class="button button-primary button-wide" type="submit">Send reset link</button>
+          <button id="return-to-login" class="text-button" type="button">Return to sign in</button>
+        </form>
+        <form id="recovery-form" class="auth-card" autocomplete="on" hidden>
+          <p class="eyebrow">Account recovery</p>
+          <h2>Choose a new password</h2>
+          <label class="form-field">
+            <span>New password</span>
+            <input id="recovery-password" name="password" type="password" autocomplete="new-password" minlength="8" required>
+          </label>
+          <label class="form-field">
+            <span>Confirm new password</span>
+            <input id="recovery-password-confirm" name="password-confirm" type="password" autocomplete="new-password" minlength="8" required>
+          </label>
+          <p id="recovery-status" class="notice" role="status" aria-live="polite"></p>
+          <button id="recovery-submit" class="button button-primary button-wide" type="submit">Save new password</button>
+        </form>
+        <form id="forced-password-form" class="auth-card" autocomplete="on" hidden>
+          <p class="eyebrow">Account security</p>
+          <h2>Change your temporary password</h2>
+          <p class="muted">Choose a new password before continuing to your coursework.</p>
+          <label class="form-field">
+            <span>New password</span>
+            <input id="forced-password" name="password" type="password" autocomplete="new-password" minlength="8" required>
+          </label>
+          <label class="form-field">
+            <span>Confirm new password</span>
+            <input id="forced-password-confirm" name="password-confirm" type="password" autocomplete="new-password" minlength="8" required>
+          </label>
+          <p id="forced-password-status" class="notice" role="status" aria-live="polite"></p>
+          <button id="forced-password-submit" class="button button-primary button-wide" type="submit">Update password</button>
         </form>
       </section>
 
@@ -67,6 +104,15 @@
           </div>
           <span id="role-chip" class="role-chip">Student</span>
         </div>
+
+        <section class="notification-center card" aria-labelledby="notification-heading">
+          <div class="panel-heading">
+            <div><p class="eyebrow">Updates</p><h2 id="notification-heading">Notifications <span id="notification-count" class="notification-count">0</span></h2></div>
+            <button id="refresh-notifications" class="icon-button" type="button" aria-label="Refresh notifications" title="Refresh">↻</button>
+          </div>
+          <p id="notification-status" class="notice" role="status" aria-live="polite"></p>
+          <div id="notification-list" class="notification-list" aria-live="polite"></div>
+        </section>
 
         <section id="student-panel" class="workspace" hidden>
           <aside class="assignment-column">
@@ -81,6 +127,18 @@
               </label>
               <p id="join-status" class="notice" role="status" aria-live="polite"></p>
             </form>
+            <section class="course-announcements" aria-labelledby="student-announcements-heading">
+              <div class="panel-heading">
+                <div><p class="eyebrow">From your lecturers</p><h2 id="student-announcements-heading">Class updates</h2></div>
+              </div>
+              <div id="student-announcements" class="announcement-list" aria-live="polite"></div>
+            </section>
+            <section class="student-gradebook" aria-labelledby="student-gradebook-heading">
+              <div class="panel-heading">
+                <div><p class="eyebrow">Results</p><h2 id="student-gradebook-heading">Gradebook</h2></div>
+              </div>
+              <div id="student-gradebook-list" class="gradebook-list" aria-live="polite"></div>
+            </section>
             <div id="student-assignment-list" class="assignment-list"></div>
           </aside>
           <section class="work-column">
@@ -99,6 +157,24 @@
                 <span id="student-submission-state" class="state-chip"></span>
               </div>
               <div id="student-instructions" class="instructions"></div>
+              <section class="assignment-discussion" aria-labelledby="student-discussion-heading">
+                <h3 id="student-discussion-heading">Assignment discussion</h3>
+                <p class="muted">Share questions with your lecturer and classmates in this class.</p>
+                <div id="student-discussion-list" class="discussion-list" aria-live="polite"></div>
+                <form id="student-discussion-form" class="discussion-form">
+                  <label class="form-field"><span>Your message</span><textarea name="body" rows="3" maxlength="10000" required placeholder="Ask a question or share a clarification."></textarea></label>
+                  <button class="button button-secondary" type="submit">Post to discussion</button>
+                  <p id="student-discussion-status" class="notice" role="status" aria-live="polite"></p>
+                </form>
+              </section>
+              <form id="extension-request-form" class="extension-request" hidden>
+                <h3>Request a deadline extension</h3>
+                <label class="form-field"><span>Requested new deadline</span><input id="extension-requested-due" type="datetime-local" required></label>
+                <label class="form-field"><span>Reason</span><textarea id="extension-request-reason" rows="3" maxlength="2000" required placeholder="Briefly explain why you need more time."></textarea></label>
+                <button class="button button-secondary" type="submit">Send request</button>
+                <p id="extension-request-status" class="notice" role="status" aria-live="polite"></p>
+              </form>
+              <p id="extension-request-summary" class="notice extension-summary" role="status" aria-live="polite"></p>
               <div class="response-heading">
                 <label for="student-response">Your response</label>
                 <span id="draft-status" class="draft-status" role="status" aria-live="polite"></span>
@@ -106,14 +182,23 @@
               <textarea id="student-response" rows="12" maxlength="100000" placeholder="Start writing your response here…"></textarea>
               <div class="editor-footer"><span id="word-count">0 words · 0 characters</span><span>Drafts save automatically</span></div>
               <div class="attachment-box">
-                <div><strong>Attachments</strong><p>Up to 10 MB per file. Keep your original copies.</p></div>
+                <div><strong>Attachments</strong><p id="attachment-limit">Use the file types and size allowed for this assignment.</p></div>
                 <label id="attachment-picker" class="button button-secondary file-picker">Add files<input id="student-files" type="file" multiple></label>
               </div>
               <ul id="student-file-list" class="file-list"></ul>
               <div class="submit-row">
-                <span>Submitting locks your response and attachments.</span>
+                <span id="submit-help">Submitting locks your response and attachments.</span>
                 <button id="submit-assignment" class="button button-primary" type="button">Submit assignment</button>
               </div>
+              <section id="submission-receipt" class="receipt" aria-live="polite" hidden>
+                <h3>Submission receipt</h3>
+                <p id="receipt-summary"></p>
+                <ul id="receipt-files" class="file-list"></ul>
+              </section>
+              <section id="submission-history" class="submission-history" hidden>
+                <h3>Submission history</h3>
+                <ol id="submission-version-list"></ol>
+              </section>
             </article>
           </section>
         </section>
@@ -126,10 +211,27 @@
             </div>
             <form id="course-form" class="course-form">
               <label class="form-field"><span>New class name</span><input id="course-name" maxlength="120" required placeholder="e.g. Biology 101"></label>
+              <label class="form-field"><span>Department <small>(optional)</small></span><select id="course-department"><option value="">No department</option></select></label>
+              <label class="form-field"><span>Academic term <small>(optional)</small></span><select id="course-term"><option value="">No academic term</option></select></label>
               <button class="button button-secondary" type="submit">Create class</button>
               <p id="course-status" class="notice" role="status" aria-live="polite"></p>
             </form>
+            <form id="announcement-form" class="announcement-form">
+              <h3>Post a class update</h3>
+              <label class="form-field"><span>Class</span><select id="announcement-course" required><option value="">Create a class first</option></select></label>
+              <label class="form-field"><span>Title</span><input id="announcement-title" maxlength="160" required placeholder="e.g. Room change"></label>
+              <label class="form-field"><span>Message</span><textarea id="announcement-body" rows="3" maxlength="10000" placeholder="Share an update with your students."></textarea></label>
+              <button class="button button-secondary" type="submit">Post update</button>
+              <p id="announcement-status" class="notice" role="status" aria-live="polite"></p>
+            </form>
             <div id="teacher-course-list" class="teacher-course-list"></div>
+            <section class="course-roster" aria-labelledby="course-roster-heading">
+              <h3 id="course-roster-heading">Class roster & attendance</h3>
+              <label class="form-field"><span>Class</span><select id="roster-course" required><option value="">Create a class first</option></select></label>
+              <label class="form-field"><span>Attendance date</span><input id="attendance-date" type="date" required></label>
+              <p id="roster-status" class="notice" role="status" aria-live="polite"></p>
+              <div id="course-roster-list" class="roster-list"></div>
+            </section>
           </section>
           <section class="teacher-create card">
             <div class="panel-heading">
@@ -140,6 +242,17 @@
               <label class="form-field"><span>Instructions</span><textarea id="assignment-instructions" rows="5" maxlength="20000" placeholder="Describe the task, expectations, and submission requirements."></textarea></label>
               <label class="form-field"><span>Class</span><select id="assignment-course" required><option value="">Create a class first</option></select></label>
               <label class="form-field"><span>Due date <small>(optional)</small></span><input id="assignment-due" type="datetime-local"></label>
+              <label class="form-field"><span>Maximum marks</span><input id="assignment-max-marks" type="number" min="1" max="100000" step="0.01" value="100" required></label>
+              <label class="form-field"><span>Late penalty <small>(optional percentage)</small></span><input id="assignment-late-penalty" type="number" min="0" max="100" step="0.01" placeholder="e.g. 10"></label>
+              <label class="form-field"><span>Maximum file size <small>(MB per file)</small></span><input id="assignment-file-size" type="number" min="1" max="100" step="1" value="10" required></label>
+              <label class="form-field"><span>Allowed MIME types <small>(comma-separated; leave blank for any)</small></span><input id="assignment-file-types" maxlength="500" placeholder="application/pdf, image/png"></label>
+              <label class="form-check"><input id="assignment-allow-late" type="checkbox"><span>Accept submissions after the deadline</span></label>
+              <label class="form-check"><input id="assignment-allow-resubmission" type="checkbox"><span>Allow resubmission before the effective deadline</span></label>
+              <section class="rubric-editor" aria-labelledby="rubric-editor-heading">
+                <div class="rubric-editor-heading"><h3 id="rubric-editor-heading">Optional grading rubric</h3><button id="add-rubric-criterion" class="button button-secondary" type="button">Add criterion</button></div>
+                <p class="muted">If added, criterion weights must total 100%. Scores will calculate the assignment mark.</p>
+                <div id="rubric-criteria-editor" class="rubric-criteria-editor"></div>
+              </section>
               <button class="button button-primary" type="submit">Publish assignment</button>
               <p id="teacher-status" class="notice" role="status" aria-live="polite"></p>
             </form>
@@ -150,13 +263,62 @@
               <button id="refresh-teacher" class="icon-button" type="button" aria-label="Refresh assignments" title="Refresh">↻</button>
             </div>
             <div id="teacher-assignment-list" class="teacher-assignment-list"></div>
+            <section id="teacher-extension-requests" class="extension-requests" hidden>
+              <h3>Deadline extension requests</h3>
+              <div id="teacher-extension-list" class="extension-list"></div>
+            </section>
             <div id="teacher-submissions" class="submission-list"></div>
+            <section id="teacher-discussion" class="assignment-discussion teacher-discussion" aria-labelledby="teacher-discussion-heading" hidden>
+              <h3 id="teacher-discussion-heading">Assignment discussion</h3>
+              <p class="muted">Messages are visible to enrolled students and class lecturers.</p>
+              <div id="teacher-discussion-list" class="discussion-list" aria-live="polite"></div>
+              <form id="teacher-discussion-form" class="discussion-form">
+                <label class="form-field"><span>Your message</span><textarea name="body" rows="3" maxlength="10000" required placeholder="Reply to the class discussion."></textarea></label>
+                <button class="button button-secondary" type="submit">Post to discussion</button>
+                <p id="teacher-discussion-status" class="notice" role="status" aria-live="polite"></p>
+              </form>
+            </section>
+          </section>
+        </section>
+
+        <section id="admin-panel" class="card" hidden>
+          <div class="panel-heading">
+            <div><p class="eyebrow">Administration</p><h2>University management</h2></div>
+            <button id="refresh-admin-users" class="icon-button" type="button" aria-label="Refresh user accounts" title="Refresh">↻</button>
+          </div>
+          <p class="muted">Manage roles and access for existing accounts. Create accounts and send invitations through Supabase Authentication.</p>
+          <p id="admin-status" class="notice" role="status" aria-live="polite"></p>
+          <div id="admin-user-list" class="admin-user-list"></div>
+          <section id="academic-directory" class="academic-directory" aria-labelledby="academic-directory-heading">
+            <div class="panel-heading">
+              <div><p class="eyebrow">Course setup</p><h2 id="academic-directory-heading">Departments & academic terms</h2></div>
+              <button id="refresh-directory" class="icon-button" type="button" aria-label="Refresh departments and academic terms" title="Refresh">↻</button>
+            </div>
+            <p id="directory-status" class="notice" role="status" aria-live="polite"></p>
+            <div class="directory-forms">
+              <form id="department-form" class="directory-form">
+                <h3>Add department</h3>
+                <label class="form-field"><span>Department name</span><input id="department-name" maxlength="120" required placeholder="e.g. Life Sciences"></label>
+                <button class="button button-secondary" type="submit">Add department</button>
+              </form>
+              <form id="term-form" class="directory-form">
+                <h3>Add academic term</h3>
+                <label class="form-field"><span>Term name</span><input id="term-name" maxlength="80" required placeholder="e.g. Fall"></label>
+                <label class="form-field"><span>Academic year</span><input id="term-year" type="number" min="2000" max="2200" step="1" required></label>
+                <div class="directory-date-fields">
+                  <label class="form-field"><span>Starts <small>(optional)</small></span><input id="term-start" type="date"></label>
+                  <label class="form-field"><span>Ends <small>(optional)</small></span><input id="term-end" type="date"></label>
+                </div>
+                <button class="button button-secondary" type="submit">Add academic term</button>
+              </form>
+            </div>
+            <div id="academic-directory-list" class="academic-directory-list"></div>
           </section>
         </section>
       </section>
 
       <footer class="page-footer">
-        <span>AssignmentTracker</span>
+        <span>UniTrack</span>
         <span>Coursework stays private to your account and its assigned lecturer.</span>
       </footer>
     </main>

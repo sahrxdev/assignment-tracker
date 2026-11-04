@@ -1,8 +1,8 @@
 {
   "manifest_version": 3,
-  "name": "AssignmentTracker",
+  "name": "UniTrack",
   "version": "1.0.0",
-  "description": "Tracks active time and paste events for educational assignments locally.",
+  "description": "A privacy-first study companion that tracks assignment activity locally.",
   "permissions": [
     "storage",
     "alarms",

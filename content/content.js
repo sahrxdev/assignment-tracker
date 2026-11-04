@@ -42,7 +42,7 @@ function updateBanner() {
 
   const banner = document.createElement('div');
   banner.id = 'at-banner';
-  banner.textContent = 'AssignmentTracker is recording session activity';
+  banner.textContent = 'UniTrack is recording session activity';
   document.body.appendChild(banner);
 }
 

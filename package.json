@@ -1,5 +1,5 @@
 {
-  "name": "assignment-tracker",
+  "name": "unitrack",
   "private": true,
   "scripts": {
     "package": "node create-zip.js",

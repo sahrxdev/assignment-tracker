@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Creates a ZIP file of the AssignmentTracker extension.
+ * Creates a ZIP file of the UniTrack extension.
  * Run: node create-zip.js
  */
 
@@ -9,10 +9,10 @@ const path = require('path');
 const JSZip = require('jszip');
 
 async function createZip() {
-  console.log('Creating AssignmentTracker ZIP file...\n');
+  console.log('Creating UniTrack ZIP file...\n');
 
   const zip = new JSZip();
-  const rootFolder = zip.folder('assignment-tracker');
+  const rootFolder = zip.folder('UniTrack');
   const extensionDirectories = [
     'background',
     'consent',
@@ -59,7 +59,7 @@ async function createZip() {
     compressionOptions: { level: 9 }
   });
 
-  const outputPath = path.join(__dirname, 'assignment-tracker.zip');
+  const outputPath = path.join(__dirname, 'unitrack.zip');
   fs.writeFileSync(outputPath, zipBuffer);
 
   console.log('\nZIP file created successfully!');
@@ -70,7 +70,7 @@ async function createZip() {
   console.log('   2. Open chrome://extensions/.');
   console.log('   3. Enable "Developer mode".');
   console.log('   4. Click "Load unpacked".');
-  console.log('   5. Select the extracted "assignment-tracker" folder.');
+  console.log('   5. Select the extracted "UniTrack" folder.');
 }
 
 createZip().catch(error => {
