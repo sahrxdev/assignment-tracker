@@ -3,25 +3,22 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="theme-color" content="#f4f7f5">
+    <meta name="theme-color" content="#f7f8fa">
     <title>UniTrack | Coursework portal</title>
+    <link rel="icon" href="/unitrack-logo.png">
     <link rel="stylesheet" href="./style.css">
   </head>
   <body>
-    <main class="shell">
-      <header class="topbar">
+    <main id="auth-shell" class="shell">
+      <header id="auth-topbar" class="topbar">
         <a class="brand" href="#" aria-label="UniTrack home">
-          <img src="../icons/icon48.png" width="38" height="38" alt="">
+          <img src="/unitrack-logo.png" width="38" height="38" alt="">
           <span>Uni<span class="brand-accent">Track</span></span>
         </a>
-        <div id="account-bar" class="account-bar" hidden>
-          <span id="account-label" class="account-label"></span>
-          <button id="sign-out" class="button button-quiet" type="button">Sign out</button>
-        </div>
       </header>
 
       <section id="setup-message" class="setup-message" hidden>
-        <span class="setup-icon" aria-hidden="true">!</span>
+        <span class="setup-icon" aria-hidden="true"><i data-lucide="shield"></i></span>
         <div>
           <strong>Connect your Supabase project</strong>
           <p>Copy <code>.env.example</code> to <code>.env.local</code>, add your Supabase project URL and publishable/anon key, then restart the portal.</p>
@@ -33,7 +30,7 @@
           <p class="eyebrow">A calmer way to manage coursework</p>
           <h1>One place for assignments, drafts, and submissions.</h1>
           <p class="story-copy">Lecturers can share clear assignment briefs. Students can work on a draft, attach files, and submit when it is ready.</p>
-          <div class="trust-note"><span aria-hidden="true">🔒</span><span>Your account and coursework are private to your class roles.</span></div>
+          <div class="trust-note"><i data-lucide="lock-keyhole" aria-hidden="true"></i><span>Your account and coursework are private to your class roles.</span></div>
         </div>
         <form id="auth-form" class="auth-card" autocomplete="on">
           <p class="eyebrow">Welcome</p>
@@ -95,7 +92,48 @@
         </form>
       </section>
 
-      <section id="dashboard-view" hidden>
+      <footer id="page-footer" class="page-footer">
+        <span>UniTrack</span>
+        <span>Coursework stays private to your account and its assigned lecturer.</span>
+      </footer>
+    </main>
+
+      <section id="dashboard-view" class="app-shell" hidden>
+        <aside id="app-sidebar" class="app-sidebar" aria-label="Main navigation; hover or focus the left edge to open">
+          <a class="brand sidebar-brand" href="#" aria-label="UniTrack home">
+            <img src="/unitrack-logo.png" width="38" height="38" alt="">
+            <span>Uni<span class="brand-accent">Track</span></span>
+          </a>
+          <p id="sidebar-role" class="sidebar-role"></p>
+          <nav id="app-navigation" class="app-navigation" aria-label="Workspace"></nav>
+          <div class="sidebar-account">
+            <span id="sidebar-avatar" class="avatar" aria-hidden="true"></span>
+            <span class="sidebar-account-copy">
+              <strong id="sidebar-name"></strong>
+              <small id="sidebar-email"></small>
+            </span>
+          </div>
+        </aside>
+        <button id="sidebar-backdrop" class="sidebar-backdrop" type="button" aria-label="Close navigation" tabindex="-1" hidden></button>
+        <div class="app-main">
+          <header class="app-topbar">
+            <button id="mobile-menu-toggle" class="icon-button mobile-menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false">
+              <i data-lucide="menu" aria-hidden="true"></i>
+            </button>
+            <div id="account-bar" class="account-bar" hidden>
+              <span id="account-label" class="account-label"></span>
+              <button id="theme-toggle" class="icon-button" type="button" aria-label="Switch to dark theme" title="Switch to dark theme">
+                <i data-lucide="moon" aria-hidden="true"></i>
+              </button>
+              <button id="profile-shortcut" class="icon-button" type="button" aria-label="Open profile" title="Profile">
+                <i data-lucide="user-round" aria-hidden="true"></i>
+              </button>
+              <button id="sign-out" class="button button-quiet" type="button">
+                <i data-lucide="log-out" aria-hidden="true"></i><span>Sign out</span>
+              </button>
+            </div>
+          </header>
+          <main class="app-content">
         <div class="welcome-row">
           <div>
             <p id="role-label" class="eyebrow">Student workspace</p>
@@ -105,10 +143,11 @@
           <span id="role-chip" class="role-chip">Student</span>
         </div>
 
+        <div id="route-content" class="route-content">
         <section class="notification-center card" aria-labelledby="notification-heading">
           <div class="panel-heading">
             <div><p class="eyebrow">Updates</p><h2 id="notification-heading">Notifications <span id="notification-count" class="notification-count">0</span></h2></div>
-            <button id="refresh-notifications" class="icon-button" type="button" aria-label="Refresh notifications" title="Refresh">↻</button>
+            <button id="refresh-notifications" class="icon-button" type="button" aria-label="Refresh notifications" title="Refresh"><i data-lucide="refresh-cw" aria-hidden="true"></i></button>
           </div>
           <p id="notification-status" class="notice" role="status" aria-live="polite"></p>
           <div id="notification-list" class="notification-list" aria-live="polite"></div>
@@ -118,7 +157,7 @@
           <aside class="assignment-column">
             <div class="panel-heading">
               <div><p class="eyebrow">Coursework</p><h2>Assignments</h2></div>
-              <button id="refresh-student" class="icon-button" type="button" aria-label="Refresh assignments" title="Refresh">↻</button>
+              <button id="refresh-student" class="icon-button" type="button" aria-label="Refresh assignments" title="Refresh"><i data-lucide="refresh-cw" aria-hidden="true"></i></button>
             </div>
             <form id="join-course-form" class="join-course-form">
               <label class="form-field">
@@ -143,7 +182,7 @@
           </aside>
           <section class="work-column">
             <div id="student-empty" class="empty-card">
-              <span class="empty-art" aria-hidden="true">✦</span>
+              <span class="empty-art" aria-hidden="true"><i data-lucide="book-open"></i></span>
               <h2>Your next step starts here</h2>
               <p>Choose an assignment to read the brief and work on your response.</p>
             </div>
@@ -157,6 +196,7 @@
                 <span id="student-submission-state" class="state-chip"></span>
               </div>
               <div id="student-instructions" class="instructions"></div>
+              <p id="student-group-status" class="notice group-assignment-status" role="status" aria-live="polite" hidden></p>
               <section class="assignment-discussion" aria-labelledby="student-discussion-heading">
                 <h3 id="student-discussion-heading">Assignment discussion</h3>
                 <p class="muted">Share questions with your lecturer and classmates in this class.</p>
@@ -207,7 +247,7 @@
           <section class="teacher-classes card">
             <div class="panel-heading">
               <div><p class="eyebrow">Classroom</p><h2>Your classes</h2></div>
-              <button id="refresh-courses" class="icon-button" type="button" aria-label="Refresh classes" title="Refresh">↻</button>
+              <button id="refresh-courses" class="icon-button" type="button" aria-label="Refresh classes" title="Refresh"><i data-lucide="refresh-cw" aria-hidden="true"></i></button>
             </div>
             <form id="course-form" class="course-form">
               <label class="form-field"><span>New class name</span><input id="course-name" maxlength="120" required placeholder="e.g. Biology 101"></label>
@@ -247,7 +287,7 @@
               <label class="form-field"><span>Maximum file size <small>(MB per file)</small></span><input id="assignment-file-size" type="number" min="1" max="100" step="1" value="10" required></label>
               <label class="form-field"><span>Allowed MIME types <small>(comma-separated; leave blank for any)</small></span><input id="assignment-file-types" maxlength="500" placeholder="application/pdf, image/png"></label>
               <label class="form-check"><input id="assignment-allow-late" type="checkbox"><span>Accept submissions after the deadline</span></label>
-              <label class="form-check"><input id="assignment-allow-resubmission" type="checkbox"><span>Allow resubmission before the effective deadline</span></label>
+              <label class="form-check"><input id="assignment-group-work" type="checkbox"><span>Group assignment (lecturer assigns groups by student ID)</span></label>
               <section class="rubric-editor" aria-labelledby="rubric-editor-heading">
                 <div class="rubric-editor-heading"><h3 id="rubric-editor-heading">Optional grading rubric</h3><button id="add-rubric-criterion" class="button button-secondary" type="button">Add criterion</button></div>
                 <p class="muted">If added, criterion weights must total 100%. Scores will calculate the assignment mark.</p>
@@ -260,9 +300,23 @@
           <section class="teacher-list card">
             <div class="panel-heading">
               <div><p class="eyebrow">Your class</p><h2>Assignments & submissions</h2></div>
-              <button id="refresh-teacher" class="icon-button" type="button" aria-label="Refresh assignments" title="Refresh">↻</button>
+              <button id="refresh-teacher" class="icon-button" type="button" aria-label="Refresh assignments" title="Refresh"><i data-lucide="refresh-cw" aria-hidden="true"></i></button>
             </div>
             <div id="teacher-assignment-list" class="teacher-assignment-list"></div>
+            <section id="assignment-groups" class="assignment-groups" hidden>
+              <h3>Assignment groups</h3>
+              <p class="muted">Create or edit groups using student IDs from this class. The group leader is the only member who can submit, and membership locks once a draft is started.</p>
+              <label class="form-field"><span>Group to manage</span><select id="assignment-group-select"><option value="">Create a new group</option></select></label>
+              <form id="assignment-group-form" class="assignment-group-form">
+                <label class="form-field"><span>Group name</span><input id="assignment-group-name" maxlength="120" required placeholder="e.g. Team 1"></label>
+                <label class="form-field"><span>Leader student ID</span><input id="assignment-group-leader-id" maxlength="80" required placeholder="Student ID"></label>
+                <label class="form-field"><span>Member student IDs</span><textarea id="assignment-group-member-ids" rows="4" placeholder="Enter one ID per line, or separate IDs with commas"></textarea></label>
+                <p class="muted">Include the leader’s ID; it is added automatically if omitted. All IDs must belong to active students enrolled in this class.</p>
+                <button id="save-assignment-group" class="button button-secondary" type="submit">Save group</button>
+                <p id="assignment-group-status" class="notice" role="status" aria-live="polite"></p>
+              </form>
+              <div id="assignment-group-list" class="assignment-group-list"></div>
+            </section>
             <section id="teacher-extension-requests" class="extension-requests" hidden>
               <h3>Deadline extension requests</h3>
               <div id="teacher-extension-list" class="extension-list"></div>
@@ -284,15 +338,27 @@
         <section id="admin-panel" class="card" hidden>
           <div class="panel-heading">
             <div><p class="eyebrow">Administration</p><h2>University management</h2></div>
-            <button id="refresh-admin-users" class="icon-button" type="button" aria-label="Refresh user accounts" title="Refresh">↻</button>
+            <button id="refresh-admin-users" class="icon-button" type="button" aria-label="Refresh user accounts" title="Refresh"><i data-lucide="refresh-cw" aria-hidden="true"></i></button>
           </div>
-          <p class="muted">Manage roles and access for existing accounts. Create accounts and send invitations through Supabase Authentication.</p>
+          <p class="muted">Create accounts with their email, full name, role, and (for students) student ID. Set a temporary password and give it to the account holder through a secure channel.</p>
           <p id="admin-status" class="notice" role="status" aria-live="polite"></p>
+          <form id="admin-create-user-form" class="admin-create-user-form">
+            <h3>Create an account</h3>
+            <label class="form-field"><span>Full name</span><input id="new-user-full-name" maxlength="120" required autocomplete="name" placeholder="Full name"></label>
+            <label class="form-field"><span>Email</span><input id="new-user-email" type="email" maxlength="254" required autocomplete="email" placeholder="name@example.edu"></label>
+            <label class="form-field"><span>Role</span><select id="new-user-role" required><option value="student">Student</option><option value="teacher">Lecturer</option><option value="admin">Admin</option></select></label>
+            <label id="new-user-student-id-field" class="form-field"><span>Student ID</span><input id="new-user-student-id" maxlength="80" required placeholder="Unique student ID"></label>
+            <label class="form-field"><span>Temporary password</span><input id="new-user-temporary-password" type="password" minlength="8" maxlength="128" required autocomplete="new-password" placeholder="At least 8 characters"></label>
+            <label class="form-field"><span>Confirm temporary password</span><input id="new-user-confirm-password" type="password" minlength="8" maxlength="128" required autocomplete="new-password" placeholder="Re-enter temporary password"></label>
+            <p class="muted">The account will require a password change at first sign-in. The portal will not email or display the password after creation.</p>
+            <button id="create-admin-user" class="button button-primary" type="submit">Create account</button>
+            <p id="admin-create-user-status" class="notice" role="status" aria-live="polite"></p>
+          </form>
           <div id="admin-user-list" class="admin-user-list"></div>
           <section id="academic-directory" class="academic-directory" aria-labelledby="academic-directory-heading">
             <div class="panel-heading">
               <div><p class="eyebrow">Course setup</p><h2 id="academic-directory-heading">Departments & academic terms</h2></div>
-              <button id="refresh-directory" class="icon-button" type="button" aria-label="Refresh departments and academic terms" title="Refresh">↻</button>
+              <button id="refresh-directory" class="icon-button" type="button" aria-label="Refresh departments and academic terms" title="Refresh"><i data-lucide="refresh-cw" aria-hidden="true"></i></button>
             </div>
             <p id="directory-status" class="notice" role="status" aria-live="polite"></p>
             <div class="directory-forms">
@@ -315,13 +381,11 @@
             <div id="academic-directory-list" class="academic-directory-list"></div>
           </section>
         </section>
+        </div>
+          </main>
+        </div>
       </section>
 
-      <footer class="page-footer">
-        <span>UniTrack</span>
-        <span>Coursework stays private to your account and its assigned lecturer.</span>
-      </footer>
-    </main>
     <script type="module" src="./src/main.js"></script>
   </body>
 </html>
